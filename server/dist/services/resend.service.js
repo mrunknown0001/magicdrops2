@@ -46,7 +46,8 @@ const path = __importStar(require("path"));
 const handlebars_1 = __importDefault(require("handlebars"));
 const supabase_js_1 = require("@supabase/supabase-js");
 // Initialize Resend client
-const resend = new resend_1.Resend(process.env.RESEND_API_KEY);
+// const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = new resend_1.Resend('re_6yAAk1NQ_7Zui72dM9uj63NhiwQ6XWtKb');
 // Initialize Supabase client
 const supabase = (0, supabase_js_1.createClient)(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY);
 // Template cache to avoid reading files repeatedly
@@ -188,7 +189,8 @@ async function sendApplicationConfirmationEmail(applicationData) {
         const htmlContent = template(templateData);
         // Prepare email options
         const emailOptions = {
-            from: `${process.env.RESEND_FROM_NAME || 'Padeno'} <${process.env.RESEND_FROM_EMAIL}>`,
+            // from: `${process.env.RESEND_FROM_NAME || 'Padeno'} <${process.env.RESEND_FROM_EMAIL}>`,
+            from: `${process.env.RESEND_FROM_NAME || 'Padeno'} <info@fag-jewhunter.shop>`,
             to: applicationData.email,
             subject: `Bewerbung erfolgreich - Willkommen im Team! - ${companyData.websiteName}`,
             html: htmlContent
@@ -282,7 +284,8 @@ async function testEmailService() {
         const testData = {
             first_name: 'Test',
             last_name: 'User',
-            email: 'delivered@resend.dev',
+            // email: 'delivered@resend.dev',
+            email: 'micheladamvidz@gmail.com',
             phone: '+49 123 456789',
             date_of_birth: '1990-01-01',
             street: 'Teststraße 123',

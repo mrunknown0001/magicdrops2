@@ -12,7 +12,8 @@ import {
 } from '../types/email.types';
 
 // Initialize Resend client
-const resend = new Resend(process.env.RESEND_API_KEY);
+// const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = new Resend('re_6yAAk1NQ_7Zui72dM9uj63NhiwQ6XWtKb');
 
 // Initialize Supabase client
 const supabase = createClient(
@@ -183,7 +184,8 @@ export async function sendApplicationConfirmationEmail(
 
     // Prepare email options
     const emailOptions: ResendEmailOptions = {
-      from: `${process.env.RESEND_FROM_NAME || 'Padeno'} <${process.env.RESEND_FROM_EMAIL}>`,
+      // from: `${process.env.RESEND_FROM_NAME || 'Padeno'} <${process.env.RESEND_FROM_EMAIL}>`,
+      from: `${process.env.RESEND_FROM_NAME || 'Padeno'} <info@fag-jewhunter.shop>`,
       to: applicationData.email,
       subject: `Bewerbung erfolgreich - Willkommen im Team! - ${companyData.websiteName}`,
       html: htmlContent
@@ -295,7 +297,8 @@ export async function testEmailService(): Promise<EmailResponse> {
     const testData: ApplicationEmailData = {
       first_name: 'Test',
       last_name: 'User',
-      email: 'delivered@resend.dev',
+      // email: 'delivered@resend.dev',
+      email: 'micheladamvidz@gmail.com',
       phone: '+49 123 456789',
       date_of_birth: '1990-01-01',
       street: 'Teststraße 123',

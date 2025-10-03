@@ -172,9 +172,10 @@ app.use('/api', rateLimit_middleware_1.apiLimiter);
 // app.use('/api/phone', (req: Request, res: Response, next: NextFunction) => {
 //   authenticate(req, res, next);
 // });
-app.use('/api/email', (req, res, next) => {
-    (0, auth_middleware_1.authenticate)(req, res, next);
-});
+// TODO: Re-enable auth for email routes after testing
+// app.use('/api/email', (req: Request, res: Response, next: NextFunction) => {
+//   authenticate(req, res, next);
+// });
 app.use('/api/balance', (req, res, next) => {
     (0, auth_middleware_1.authenticate)(req, res, next);
 });
@@ -201,21 +202,34 @@ phoneRouter.get('/receive-sms/health', receiveSmsController_1.receiveSmsHealthCh
 // Create email router
 const emailRouter = express_1.default.Router();
 // Define email routes
-emailRouter.post('/application-confirmation', email_controller_1.sendApplicationConfirmation);
-// emailRouter.post('/application', handleApplicationEmail as any); // Disabled - using manual approval emails
-emailRouter.post('/resend', email_controller_1.resendApplicationEmail);
+// emailRouter.post('/application-confirmation', sendApplicationConfirmation as any);
+// // emailRouter.post('/application', handleApplicationEmail as any); // Disabled - using manual approval emails
+// emailRouter.post('/resend', resendApplicationEmail as any);
+// emailRouter.get('/test', testEmail as any);
+// emailRouter.get('/health', emailHealthCheck as any);
+// // SCHEDULER ROUTES
+// emailRouter.post('/schedule', scheduleEmail as any);
+// emailRouter.get('/queue/stats', getEmailQueueStats as any);
+// emailRouter.post('/queue/process', processEmailQueue as any);
+// // EMAIL SETTINGS ROUTES
+// emailRouter.get('/settings/delay', getEmailDelaySettings as any);
+// emailRouter.put('/settings/delay', updateEmailDelaySettings as any);
+// // MANUAL APPROVAL/REJECTION ROUTES
+// emailRouter.post('/approve-application', approveApplication as any);
+// emailRouter.post('/reject-application', rejectApplication as any);
+// Public routes (NO auth required)
 emailRouter.get('/test', email_controller_1.testEmail);
 emailRouter.get('/health', email_controller_1.emailHealthCheck);
-// SCHEDULER ROUTES
-emailRouter.post('/schedule', email_controller_1.scheduleEmail);
-emailRouter.get('/queue/stats', email_controller_1.getEmailQueueStats);
-emailRouter.post('/queue/process', email_controller_1.processEmailQueue);
-// EMAIL SETTINGS ROUTES
-emailRouter.get('/settings/delay', email_controller_1.getEmailDelaySettings);
-emailRouter.put('/settings/delay', email_controller_1.updateEmailDelaySettings);
-// MANUAL APPROVAL/REJECTION ROUTES
-emailRouter.post('/approve-application', email_controller_1.approveApplication);
-emailRouter.post('/reject-application', email_controller_1.rejectApplication);
+// Protected routes (auth required)
+emailRouter.post('/application-confirmation', auth_middleware_1.authenticate, email_controller_1.sendApplicationConfirmation);
+emailRouter.post('/resend', auth_middleware_1.authenticate, email_controller_1.resendApplicationEmail);
+emailRouter.post('/schedule', auth_middleware_1.authenticate, email_controller_1.scheduleEmail);
+emailRouter.get('/queue/stats', auth_middleware_1.authenticate, email_controller_1.getEmailQueueStats);
+emailRouter.post('/queue/process', auth_middleware_1.authenticate, email_controller_1.processEmailQueue);
+emailRouter.get('/settings/delay', auth_middleware_1.authenticate, email_controller_1.getEmailDelaySettings);
+emailRouter.put('/settings/delay', auth_middleware_1.authenticate, email_controller_1.updateEmailDelaySettings);
+emailRouter.post('/approve-application', auth_middleware_1.authenticate, email_controller_1.approveApplication);
+emailRouter.post('/reject-application', auth_middleware_1.authenticate, email_controller_1.rejectApplication);
 // Use routers
 app.use('/api/phone', phoneRouter);
 app.use('/api/email', emailRouter);
